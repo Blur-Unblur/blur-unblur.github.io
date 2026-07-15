@@ -42,6 +42,10 @@ const faqs = [
     question: "Are my photos kept private?",
     answer: "Yes for this implementation. The image is decoded, face masks are created, and the result is rendered with browser APIs locally; no upload endpoint is used.",
   },
+  {
+    question: "Which browsers and image sizes are supported?",
+    answer: "Blur & Unblur AI works best in current Chrome, Edge, Safari, and Firefox releases with JavaScript and Canvas enabled. Use JPG, PNG, or WebP images. Very large photos may be limited by your device memory, so resize extremely high-resolution camera files if the browser becomes slow.",
+  },
 ];
 
 const structuredData = [
@@ -74,8 +78,8 @@ const structuredData = [
 ---
 
 <Layout
-  title="Blur Faces Online | Free Private Photo Blur Tool"
-  description="Blur an entire photo or selected faces online for free. Automatic face detection, manual lasso, adjustable blur, and private local processing."
+  title="Free Face Blur and Unblur Tool | Blur & Unblur AI"
+  description="Use Blur & Unblur AI to blur faces, unblur selected faces, or blur an entire photo online. Automatic face detection, manual lasso selection, adjustable strength, and private local processing."
   structuredData={structuredData}
 >
   <Header />
@@ -83,11 +87,11 @@ const structuredData = [
     <section class="relative overflow-hidden bg-background pb-32 pt-20">
       <div class="section-shell relative z-10 text-center">
         <h1 class="mx-auto mb-6 max-w-4xl text-4xl font-bold leading-tight tracking-normal text-on-surface md:text-5xl">
-          Blur &amp; Unblur Faces <br />
-          <span class="gradient-text">100% Free Forever</span>
+          Free Face Blur and Unblur Tool <br />
+          <span class="gradient-text">Private Browser Editing</span>
         </h1>
         <p class="mx-auto mb-12 max-w-2xl text-lg leading-7 text-on-surface-variant">
-          Detect faces automatically, blur or unblur only those faces, and use lasso selection when the detector needs a hand. No hidden costs.
+          Blur and unblur faces online with automatic face detection, manual lasso selection, full photo blur, and a clean PNG download. Blur &amp; Unblur AI keeps editing local in your browser, so source photos are not uploaded to a processing server.
         </p>
 
         <h2 class="sr-only">Photo blur examples and online editor</h2>
@@ -109,6 +113,31 @@ const structuredData = [
         </div>
         <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
           {features.map((feature) => <FeatureCard {...feature} />)}
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="bg-white py-24">
+      <div class="section-shell grid grid-cols-1 gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <p class="mb-3 text-sm font-bold uppercase tracking-widest text-primary">Face privacy workflow</p>
+          <h2 class="text-3xl font-bold text-on-surface">Blur faces, unblur selected faces, or blur the full photo</h2>
+        </div>
+        <div class="space-y-6 text-base leading-7 text-on-surface-variant">
+          <p>
+            Blur &amp; Unblur AI is built for quick privacy edits before publishing screenshots, group photos, event images, or social posts. Start by loading a JPG, PNG, or WebP file. The editor draws the image to an HTML5 Canvas, runs face detection in the browser, and creates editable face masks for each detected face.
+          </p>
+          <p>
+            In Face Blur mode, the blur effect is clipped to selected face regions instead of softening the entire image. In Face Unblur mode, the same face masks are used to improve selected faces while the rest of the photo stays untouched. If automatic detection adds a wrong box, remove that selection. If it misses a face, switch to Lasso and draw a custom mask by hand.
+          </p>
+          <p>
+            Full Blur mode is available when the whole image should be obscured. The strength slider updates the Canvas preview immediately, and the download action exports the final edited PNG without guide boxes, dashed frames, handles, or editor-only overlays.
+          </p>
+          <div class="flex flex-wrap gap-3 pt-2">
+            <a class="focus-ring rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white transition hover:bg-primary-container" href="/#tool">Open the face blur editor</a>
+            <a class="focus-ring rounded-xl border border-outline-variant px-5 py-3 text-sm font-bold text-on-surface transition hover:bg-surface-container-low" href="/privacy/">Read the privacy notice</a>
+            <a class="focus-ring rounded-xl border border-outline-variant px-5 py-3 text-sm font-bold text-on-surface transition hover:bg-surface-container-low" href="/contact/">Contact on GitHub</a>
+          </div>
         </div>
       </div>
     </section>
@@ -138,6 +167,7 @@ const structuredData = [
               ["Privacy Sharing", "Blur faces before posting screenshots, event photos, or public albums."],
               ["Portrait Rescue", "Improve clarity on faces without over-processing backgrounds and clothing."],
               ["Group Photos", "Select exactly which people are blurred or enhanced before export."],
+              ["Local Downloads", "Export a clean PNG after reviewing every face mask and lasso region."],
             ].map(([title, body], index) => (
               <div class="flex gap-6">
                 <div class="flex size-10 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-primary/10 font-bold text-primary">{index + 1}</div>
@@ -148,6 +178,35 @@ const structuredData = [
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="use-cases" class="bg-background py-24">
+      <div class="section-shell">
+        <div class="mb-12 max-w-3xl">
+          <p class="mb-3 text-sm font-bold uppercase tracking-widest text-primary">Use cases</p>
+          <h2 class="text-3xl font-bold text-on-surface">Practical face blur and face unblur tasks</h2>
+        </div>
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <article class="rounded-2xl border border-outline-variant bg-white p-8 shadow-sm">
+            <h3 class="mb-3 text-xl font-bold text-on-surface">Public sharing</h3>
+            <p class="leading-7 text-on-surface-variant">
+              Blur faces before publishing street photos, school events, meetups, screenshots, testimonials, or community galleries. Face-only blur keeps the background readable while reducing the visibility of people who should not be identifiable.
+            </p>
+          </article>
+          <article class="rounded-2xl border border-outline-variant bg-white p-8 shadow-sm">
+            <h3 class="mb-3 text-xl font-bold text-on-surface">Selective edits</h3>
+            <p class="leading-7 text-on-surface-variant">
+              Use Select mode when only one face in a group should be blurred or unblurred. Remove false detections, toggle masks, and combine automatic face detection with a manual lasso region for tighter control.
+            </p>
+          </article>
+          <article class="rounded-2xl border border-outline-variant bg-white p-8 shadow-sm">
+            <h3 class="mb-3 text-xl font-bold text-on-surface">Fast local workflow</h3>
+            <p class="leading-7 text-on-surface-variant">
+              The tool is useful when you need a quick browser workflow without uploading a private source image to a cloud editor. Review the canvas result, adjust blur strength, then download a clean PNG for sharing.
+            </p>
+          </article>
         </div>
       </div>
     </section>

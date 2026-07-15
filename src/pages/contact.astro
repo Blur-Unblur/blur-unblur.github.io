@@ -1,0 +1,44 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact Blur & Unblur AI",
+  description: "Contact information for Blur & Unblur AI through GitHub.",
+};
+---
+
+<Layout
+  title="Contact Blur & Unblur AI | GitHub Support"
+  description="Contact Blur & Unblur AI through GitHub for bug reports, feature requests, and project questions. No email addresses are published on this page."
+  structuredData={structuredData}
+>
+  <Header />
+  <main class="bg-background py-20">
+    <article class="section-shell max-w-4xl rounded-3xl border border-outline-variant bg-white p-8 shadow-sm md:p-12">
+      <p class="mb-3 text-sm font-bold uppercase tracking-widest text-primary">Contact</p>
+      <h1 class="mb-6 text-4xl font-bold text-on-surface">Contact Blur &amp; Unblur AI on GitHub</h1>
+      <div class="space-y-6 text-base leading-7 text-on-surface-variant">
+        <p>
+          For questions, bug reports, feature requests, or feedback about Blur &amp; Unblur AI, use GitHub. The project does not publish email addresses on this website.
+        </p>
+        <p>
+          GitHub is the best place to describe face detection problems, browser issues, lasso behavior, download export bugs, accessibility improvements, or SEO suggestions. Include the browser name, device type, image format, and a clear description of what happened.
+        </p>
+        <p>
+          Repository contact: <a class="font-semibold text-primary underline" href="https://github.com/Blur-Unblur/blur-unblur.github.io" rel="noopener noreferrer">Blur-Unblur/blur-unblur.github.io on GitHub</a>.
+        </p>
+        <p>
+          If you report a privacy-sensitive issue, do not attach personal photos publicly. Create a minimal reproduction or describe the problem without exposing private image content.
+        </p>
+        <p>
+          Useful internal links: <a class="font-semibold text-primary underline" href="/#tool">open the editor</a>, <a class="font-semibold text-primary underline" href="/privacy/">read privacy details</a>, <a class="font-semibold text-primary underline" href="/terms/">review terms</a>, and <a class="font-semibold text-primary underline" href="/cookies/">check cookie information</a>.
+        </p>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>

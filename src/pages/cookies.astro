@@ -1,0 +1,47 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Cookie Policy",
+  description: "Cookie information for Blur & Unblur AI and its static GitHub Pages hosting.",
+};
+---
+
+<Layout
+  title="Cookie Policy | Blur & Unblur AI"
+  description="Read the Blur & Unblur AI cookie policy for local browser editing, static hosting, and third-party resources."
+  structuredData={structuredData}
+>
+  <Header />
+  <main class="bg-background py-20">
+    <article class="section-shell max-w-4xl rounded-3xl border border-outline-variant bg-white p-8 shadow-sm md:p-12">
+      <p class="mb-3 text-sm font-bold uppercase tracking-widest text-primary">Cookies</p>
+      <h1 class="mb-6 text-4xl font-bold text-on-surface">Cookie Policy</h1>
+      <div class="space-y-6 text-base leading-7 text-on-surface-variant">
+        <p>
+          Blur &amp; Unblur AI does not require account cookies, payment cookies, advertising cookies, or tracking cookies to use the face blur editor. The core workflow is a static page with local Canvas editing and client-side JavaScript.
+        </p>
+        <p>
+          The application may use ordinary browser features while it runs, such as in-memory state for the currently loaded image, detected face masks, lasso selections, slider values, and editor mode. This temporary editing state is needed for the interface to work and is cleared when the page is refreshed or closed.
+        </p>
+        <p>
+          Because the site is hosted on GitHub Pages, GitHub may use technical mechanisms required for security, network delivery, abuse prevention, and service reliability. Those hosting behaviors are controlled by GitHub, not by this editor.
+        </p>
+        <p>
+          The site loads Material Symbols from Google Fonts. Your browser may make a request to Google font infrastructure for that stylesheet. The local Inter font files are bundled with the project through Fontsource.
+        </p>
+        <p>
+          You can manage cookies, cache, and site data in your browser settings. Blocking non-essential cookies should not prevent the local image editor from opening, detecting faces, drawing lasso masks, changing blur strength, or exporting a PNG.
+        </p>
+        <p>
+          See also the <a class="font-semibold text-primary underline" href="/privacy/">Privacy Policy</a>, <a class="font-semibold text-primary underline" href="/terms/">Terms of Use</a>, and <a class="font-semibold text-primary underline" href="/contact/">Contact page</a>.
+        </p>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>
