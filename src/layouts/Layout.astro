@@ -52,9 +52,11 @@ const socialImageUrl = siteUrl ? new URL("/og-image.png", siteUrl).toString() : 
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0"
     />
+    <slot name="head-verification" />
     {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
   </head>
   <body>
+    <slot name="body-verification" />
     <slot />
   </body>
 </html>
