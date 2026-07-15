@@ -1,0 +1,165 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FeatureCard from "../components/FeatureCard.astro";
+import FAQDetails from "../components/FAQDetails.astro";
+import BeforeAfterSlider from "../components/BeforeAfterSlider.astro";
+import FaceBlurStudio from "../components/FaceBlurStudio.astro";
+
+const features = [
+  {
+    icon: "face",
+    title: "Face-Aware Editing",
+    body: "Auto-detect faces, toggle each selected face, and apply blur or clarity only where a face mask exists.",
+  },
+  {
+    icon: "lock",
+    title: "100% Private",
+    body: "Face detection, lasso masks, preview rendering, and export all run locally in the browser.",
+  },
+  {
+    icon: "gesture",
+    title: "Manual Lasso Fallback",
+    body: "If automatic face detection misses someone, outline the face by hand and the same face-only effect applies.",
+  },
+];
+
+const faqs = [
+  {
+    question: "Can I blur the whole photo?",
+    answer: "Yes. Choose Full Blur to process the complete image, or use Face Blur and Face Unblur when you only want to affect selected faces.",
+  },
+  {
+    question: "What if face detection misses a face?",
+    answer: "Switch to Lasso mode and draw around the missed face. That hand-drawn region becomes a face mask and is processed exactly like an automatically detected face.",
+  },
+  {
+    question: "Can I exclude one detected face?",
+    answer: "Yes. Stay in Select mode and click any detected face box to turn that face on or off before downloading.",
+  },
+  {
+    question: "Are my photos kept private?",
+    answer: "Yes for this implementation. The image is decoded, face masks are created, and the result is rendered with browser APIs locally; no upload endpoint is used.",
+  },
+];
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Blur & Unblur AI",
+    applicationCategory: "MultimediaApplication",
+    operatingSystem: "Any operating system with a modern web browser",
+    description: "A private browser-based editor for blurring complete photos or selected faces.",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  },
+];
+---
+
+<Layout
+  title="Blur Faces Online | Free Private Photo Blur Tool"
+  description="Blur an entire photo or selected faces online for free. Automatic face detection, manual lasso, adjustable blur, and private local processing."
+  structuredData={structuredData}
+>
+  <Header />
+  <main class="min-h-screen">
+    <section class="relative overflow-hidden bg-background pb-32 pt-20">
+      <div class="section-shell relative z-10 text-center">
+        <h1 class="mx-auto mb-6 max-w-4xl text-4xl font-bold leading-tight tracking-normal text-on-surface md:text-5xl">
+          Blur &amp; Unblur Faces <br />
+          <span class="gradient-text">100% Free Forever</span>
+        </h1>
+        <p class="mx-auto mb-12 max-w-2xl text-lg leading-7 text-on-surface-variant">
+          Detect faces automatically, blur or unblur only those faces, and use lasso selection when the detector needs a hand. No hidden costs.
+        </p>
+
+        <h2 class="sr-only">Photo blur examples and online editor</h2>
+        <div class="mb-10 grid grid-cols-1 gap-8 md:grid-cols-2">
+          <BeforeAfterSlider mode="full" title="Full Photo Blur" />
+          <BeforeAfterSlider mode="face" title="Face-Only Blur" />
+        </div>
+        <div class="mx-auto max-w-5xl">
+          <FaceBlurStudio />
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="bg-surface-container-low py-24">
+      <div class="section-shell">
+        <div class="mb-16 text-center">
+          <h2 class="mb-4 text-3xl font-bold text-on-surface">Why Choose Face Blur &amp; Unblur?</h2>
+          <div class="mx-auto h-1.5 w-24 rounded-full bg-primary"></div>
+        </div>
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {features.map((feature) => <FeatureCard {...feature} />)}
+        </div>
+      </div>
+    </section>
+
+    <section id="tech" class="relative bg-white py-24">
+      <div class="section-shell grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
+        <div class="relative">
+          <div class="absolute -left-10 -top-10 size-40 rounded-full bg-primary/5 blur-3xl"></div>
+          <div class="absolute -bottom-10 -right-10 size-40 rounded-full bg-primary/5 blur-3xl"></div>
+          <div class="relative rounded-3xl border border-outline-variant bg-surface-container-high p-2 shadow-sm">
+            <div class="rounded-2xl bg-white p-10">
+              <h3 class="gradient-text mb-6 text-3xl font-bold">Local Browser Processing</h3>
+              <p class="mb-6 text-base leading-7 text-on-surface/80">
+                Your photo is decoded, edited, and exported with browser APIs on your device. The editor does not send the source image to an upload or processing server.
+              </p>
+              <p class="text-base leading-7 text-on-surface/80">
+                Face detection creates editable masks, while Select and Lasso let you correct the affected regions before downloading a clean PNG.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-12">
+          <h2 class="text-3xl font-bold text-on-surface">When to use face-only editing?</h2>
+          <div class="space-y-8">
+            {[
+              ["Privacy Sharing", "Blur faces before posting screenshots, event photos, or public albums."],
+              ["Portrait Rescue", "Improve clarity on faces without over-processing backgrounds and clothing."],
+              ["Group Photos", "Select exactly which people are blurred or enhanced before export."],
+            ].map(([title, body], index) => (
+              <div class="flex gap-6">
+                <div class="flex size-10 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-primary/10 font-bold text-primary">{index + 1}</div>
+                <div>
+                  <h4 class="mb-1 text-lg font-bold text-on-surface">{title}</h4>
+                  <p class="text-on-surface-variant">{body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="bg-surface-container-low py-24">
+      <div class="mx-auto max-w-3xl px-6">
+        <h2 class="mb-16 text-center text-4xl font-bold text-on-surface">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {faqs.map((faq, index) => <FAQDetails {...faq} open={index === 0} />)}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

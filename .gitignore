@@ -1,0 +1,45 @@
+# Build output
+dist/
+
+# Astro content layer & build caches
+.astro/
+
+# Dependency directories
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Local environment variables and secrets
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# TypeScript compilation cache
+*.tsbuildinfo
+
+# Optional IDEs and text editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Common hosting platform local folders
+.netlify/
+.vercel/

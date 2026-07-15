@@ -1,0 +1,676 @@
+<div id="tool" class="rounded-xl border border-outline-variant bg-white p-8 shadow-sm transition-shadow hover:shadow-md" data-face-tool>
+  <div class="flex h-full flex-col gap-6">
+    <div class="rounded-xl bg-surface-container-low p-4">
+      <div class="mb-3 flex items-center justify-between gap-3">
+        <span class="text-sm font-semibold text-on-surface-variant">Face Engine:</span>
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-bold uppercase tracking-widest text-primary" data-face-count>No image</span>
+          <button class="mini-detect-button" type="button" data-detect-button>Detect</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-2">
+        <button class="engine-button is-active" type="button" data-effect="unblur">Face Unblur</button>
+        <button class="engine-button" type="button" data-effect="blur">Face Blur</button>
+        <button class="engine-button" type="button" data-effect="full-blur">Full Blur</button>
+      </div>
+      <div class="mt-2 grid grid-cols-2 gap-2">
+        <button class="engine-button is-active" type="button" data-tool-mode="select">Select</button>
+        <button class="engine-button" type="button" data-tool-mode="lasso">Lasso</button>
+      </div>
+    </div>
+
+    <div class="upload-zone group" data-drop-zone>
+      <input class="sr-only" type="file" accept="image/jpeg,image/png,image/webp" data-file-input />
+      <button class="upload-empty" type="button" data-empty-state>
+        <div class="pulse-glow mb-6 flex size-20 items-center justify-center rounded-full bg-primary/10 transition-transform group-hover:scale-110">
+          <span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 1;" aria-hidden="true">face_retouching_natural</span>
+        </div>
+        <h3 class="mb-2 text-2xl font-semibold text-on-surface">Drop Face Photo Here</h3>
+        <p class="mb-6 text-on-surface-variant">auto-detect faces or mark them by lasso</p>
+        <span class="rounded-full bg-primary px-8 py-3 font-bold text-white shadow-sm transition-colors group-hover:bg-primary-container">Select Image</span>
+        <p class="mt-8 text-xs font-medium text-on-surface-variant/60">JPG, PNG, WebP • Face-only blur &amp; unblur</p>
+      </button>
+      <div class="upload-preview is-hidden" data-preview-state>
+        <canvas data-canvas aria-label="Face blur and unblur preview"></canvas>
+      </div>
+    </div>
+
+    <div class="space-y-4 is-hidden" data-controls>
+      <div class="flex items-center justify-between gap-4">
+        <label class="text-sm font-bold text-on-surface" for="strength-range">Face effect strength</label>
+        <output class="rounded-lg bg-primary-fixed px-3 py-1 text-xs font-bold text-primary" data-strength-output>55%</output>
+      </div>
+      <input id="strength-range" class="w-full accent-primary" type="range" min="0" max="100" value="55" data-strength-range />
+      <p class="rounded-xl bg-surface-container-low px-4 py-3 text-sm font-semibold text-on-surface-variant" data-inline-status aria-live="polite">
+        Load a photo to detect faces
+      </p>
+      <div class="grid grid-cols-3 gap-3">
+        <button class="rounded-xl border border-outline-variant bg-white px-3 py-3 text-sm font-bold text-on-surface transition hover:bg-surface-container-low" type="button" data-detect-button>Detect</button>
+        <button class="rounded-xl border border-outline-variant bg-white px-3 py-3 text-sm font-bold text-on-surface transition hover:bg-surface-container-low" type="button" data-reset-button>Reset</button>
+        <button class="rounded-xl bg-primary px-3 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-primary-container" type="button" data-download-button>Download</button>
+      </div>
+    </div>
+
+    <div class="flex justify-center gap-4 border-t border-outline-variant pt-4">
+      <span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Face-only service:</span>
+      <span class="text-xs font-bold uppercase tracking-widest text-primary" data-status>Load a photo to detect faces</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .engine-button {
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    color: rgb(66 71 84 / 0.72);
+    font-size: 0.75rem;
+    font-weight: 800;
+    transition: 160ms ease;
+  }
+
+  .engine-button.is-active {
+    background: #0058be;
+    color: white;
+    box-shadow: 0 1px 3px rgb(19 27 46 / 0.16);
+  }
+
+  .mini-detect-button {
+    border: 1px solid #0058be;
+    border-radius: 0.5rem;
+    background: white;
+    padding: 0.375rem 0.75rem;
+    color: #0058be;
+    font-size: 0.75rem;
+    font-weight: 800;
+    transition: 160ms ease;
+  }
+
+  .mini-detect-button:hover {
+    background: #d8e2ff;
+  }
+
+  .upload-zone {
+    display: flex;
+    min-height: 430px;
+    flex: 1;
+    cursor: pointer;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px dashed #c2c6d6;
+    border-radius: 0.75rem;
+    background: #faf8ff;
+    transition: 180ms ease;
+  }
+
+  .upload-zone.is-dragging,
+  .upload-zone:hover {
+    background: #f2f3ff;
+    border-color: #0058be;
+  }
+
+  .upload-empty {
+    display: flex;
+    width: 100%;
+    min-height: 430px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+
+  .upload-preview {
+    display: grid;
+    width: 100%;
+    min-height: 430px;
+    place-items: center;
+    background: #e2e7ff;
+  }
+
+  .upload-preview canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 560px;
+    cursor: pointer;
+    touch-action: none;
+  }
+
+  .upload-preview canvas.is-lasso {
+    cursor: crosshair;
+  }
+
+  .is-hidden {
+    display: none;
+  }
+</style>
+
+<script>
+  // @ts-nocheck
+  class FaceBlurUnblurService {
+    constructor(root) {
+      this.root = root;
+      this.fileInput = root.querySelector("[data-file-input]");
+      this.dropZone = root.querySelector("[data-drop-zone]");
+      this.emptyState = root.querySelector("[data-empty-state]");
+      this.previewState = root.querySelector("[data-preview-state]");
+      this.controls = root.querySelector("[data-controls]");
+      this.canvas = root.querySelector("[data-canvas]");
+      this.ctx = this.canvas.getContext("2d", { willReadFrequently: true });
+      this.effectButtons = [...root.querySelectorAll("[data-effect]")];
+      this.toolButtons = [...root.querySelectorAll("[data-tool-mode]")];
+      this.strengthRange = root.querySelector("[data-strength-range]");
+      this.strengthOutput = root.querySelector("[data-strength-output]");
+      this.detectButtons = [...root.querySelectorAll("[data-detect-button]")];
+      this.resetButton = root.querySelector("[data-reset-button]");
+      this.downloadButton = root.querySelector("[data-download-button]");
+      this.status = root.querySelector("[data-status]");
+      this.inlineStatus = root.querySelector("[data-inline-status]");
+      this.faceCount = root.querySelector("[data-face-count]");
+      this.effect = "unblur";
+      this.toolMode = "select";
+      this.strength = Number(this.strengthRange.value);
+      this.sourceBitmap = null;
+      this.masks = [];
+      this.activePath = [];
+      this.isDrawing = false;
+      this.trackingReady = false;
+      this.loadDetector();
+      this.bindEvents();
+    }
+
+    bindEvents() {
+      this.emptyState.addEventListener("click", () => this.fileInput.click());
+      this.fileInput.addEventListener("change", () => this.loadFile(this.fileInput.files?.[0]));
+      this.effectButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          this.effect = button.dataset.effect;
+          this.effectButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+          this.setToolAvailability();
+          this.render();
+          this.updateFaceCount();
+          this.setStatus(
+            this.effect === "full-blur"
+              ? "Full Blur applies to the entire photo"
+              : this.effect === "unblur"
+                ? "Unblur applies only inside selected faces"
+                : "Blur applies only inside selected faces",
+          );
+        });
+      });
+      this.toolButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          this.setToolMode(button.dataset.toolMode);
+          this.setStatus(this.toolMode === "lasso" ? "Draw around a face to add a manual face mask" : "Click a face box to toggle that mask");
+        });
+      });
+      this.strengthRange.addEventListener("input", () => {
+        this.strength = Number(this.strengthRange.value);
+        this.strengthOutput.textContent = `${this.strength}%`;
+        this.render();
+      });
+      this.detectButtons.forEach((button) => {
+        button.addEventListener("click", () => this.detectFaces({ userTriggered: true }));
+      });
+      this.resetButton.addEventListener("click", () => {
+        this.masks = [];
+        this.activePath = [];
+        this.render();
+        this.updateFaceCount();
+        this.setStatus("Face masks cleared. Run Detect or use Lasso.");
+      });
+      this.downloadButton.addEventListener("click", () => this.download());
+
+      ["dragenter", "dragover"].forEach((type) => {
+        this.dropZone.addEventListener(type, (event) => {
+          event.preventDefault();
+          this.dropZone.classList.add("is-dragging");
+        });
+      });
+      ["dragleave", "drop"].forEach((type) => {
+        this.dropZone.addEventListener(type, (event) => {
+          event.preventDefault();
+          this.dropZone.classList.remove("is-dragging");
+        });
+      });
+      this.dropZone.addEventListener("drop", (event) => this.loadFile(event.dataTransfer?.files?.[0]));
+      this.canvas.addEventListener("pointerdown", (event) => this.handlePointerDown(event));
+      this.canvas.addEventListener("pointermove", (event) => this.handlePointerMove(event));
+      this.canvas.addEventListener("pointerup", () => this.finishLasso());
+      this.canvas.addEventListener("pointercancel", () => this.finishLasso());
+    }
+
+    async loadDetector() {
+      try {
+        if ("FaceDetector" in window) {
+          this.setStatus("Native face detector ready. Load a photo.");
+          return;
+        }
+        await this.loadTrackingDetector();
+        this.setStatus("Face detector ready. Load a photo.");
+      } catch {
+        this.setStatus("Detector did not load. Use Lasso to mark faces manually.");
+      }
+    }
+
+    async loadTrackingDetector() {
+      await this.injectScript("/vendor/tracking/tracking-min.js");
+      await this.injectScript("/vendor/tracking/face-min.js");
+      this.trackingReady = Boolean(window.tracking?.ObjectTracker);
+      if (!this.trackingReady) throw new Error("tracking.js did not initialize");
+    }
+
+    injectScript(src) {
+      return new Promise((resolve, reject) => {
+        const existing = document.querySelector(`script[src="${src}"]`);
+        if (existing) {
+          existing.addEventListener("load", resolve, { once: true });
+          existing.addEventListener("error", reject, { once: true });
+          if (src.includes("tracking-min") && window.tracking) resolve();
+          if (src.includes("face-min") && window.tracking?.ViolaJones?.classifiers?.face) resolve();
+          resolve();
+          return;
+        }
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.append(script);
+      });
+    }
+
+    async loadFile(file) {
+      if (!file || !file.type.startsWith("image/")) return;
+      this.sourceBitmap?.close?.();
+      this.sourceBitmap = await createImageBitmap(file);
+      this.fitCanvas(this.sourceBitmap.width, this.sourceBitmap.height);
+      this.emptyState.classList.add("is-hidden");
+      this.previewState.classList.remove("is-hidden");
+      this.controls.classList.remove("is-hidden");
+      this.masks = [];
+      this.render();
+      this.updateFaceCount();
+      if (this.effect === "full-blur") {
+        this.setStatus("Image loaded. Full Blur applies to the entire photo.");
+        return;
+      }
+      this.setStatus("Image loaded. Detecting faces...");
+      await this.detectFaces();
+    }
+
+    fitCanvas(width, height) {
+      const maxWidth = 980;
+      const scale = Math.min(1, maxWidth / width);
+      this.canvas.width = Math.round(width * scale);
+      this.canvas.height = Math.round(height * scale);
+    }
+
+    async detectFaces({ userTriggered = false } = {}) {
+      if (!this.sourceBitmap) return;
+      this.setDetectButtonsBusy(true);
+      this.setStatus(userTriggered ? "Detect clicked. Scanning visible face regions..." : "Scanning visible face regions...");
+
+      try {
+        this.drawSourceOnly(this.canvas, this.ctx);
+        let masks = await this.detectWithNativeFaceDetector();
+        if (!masks.length) {
+          masks = await this.detectWithTracking();
+        }
+
+        this.masks = masks;
+        this.render();
+        this.updateFaceCount();
+
+        if (this.masks.length) {
+          this.setToolMode("select");
+          this.setStatus(`${this.masks.length} face mask${this.masks.length === 1 ? "" : "s"} found. Use × to remove false detections.`);
+        } else {
+          this.setToolMode("lasso");
+          this.setStatus("No face found automatically. Lasso mode is on: draw around the face.");
+        }
+      } catch (error) {
+        this.setToolMode("lasso");
+        this.setStatus("Auto detection failed. Lasso mode is on: draw around the face.");
+      } finally {
+        this.setDetectButtonsBusy(false);
+      }
+    }
+
+    setDetectButtonsBusy(isBusy) {
+      this.detectButtons.forEach((button) => {
+        button.disabled = isBusy || this.effect === "full-blur";
+        button.textContent = isBusy ? "Detecting..." : "Detect";
+        button.classList.toggle("opacity-70", isBusy || this.effect === "full-blur");
+      });
+    }
+
+    async detectWithNativeFaceDetector() {
+      if (!("FaceDetector" in window)) return [];
+      try {
+        const detector = new window.FaceDetector({ fastMode: false, maxDetectedFaces: 20 });
+        const faces = await detector.detect(this.canvas);
+        return faces.map((face) => {
+          const box = face.boundingBox;
+          const paddingX = box.width * 0.18;
+          const paddingY = box.height * 0.22;
+          return {
+            type: "box",
+            x: Math.max(0, box.x - paddingX),
+            y: Math.max(0, box.y - paddingY),
+            w: Math.min(box.width + paddingX * 2, this.canvas.width),
+            h: Math.min(box.height + paddingY * 2, this.canvas.height),
+            enabled: true,
+          };
+        });
+      } catch {
+        return [];
+      }
+    }
+
+    async detectWithTracking() {
+      if (!this.trackingReady || !window.tracking?.ObjectTracker) return [];
+
+      const tracker = new window.tracking.ObjectTracker(["face"]);
+      tracker.setInitialScale(1.8);
+      tracker.setStepSize(1.35);
+      tracker.setEdgesDensity(0.08);
+
+      return new Promise((resolve) => {
+        const timeout = window.setTimeout(() => resolve([]), 2200);
+
+        tracker.on("track", (event) => {
+          window.clearTimeout(timeout);
+          const masks = event.data.map((face) => {
+            const paddingX = face.width * 0.18;
+            const paddingY = face.height * 0.22;
+            return {
+              type: "box",
+              x: Math.max(0, face.x - paddingX),
+              y: Math.max(0, face.y - paddingY),
+              w: Math.min(face.width + paddingX * 2, this.canvas.width),
+              h: Math.min(face.height + paddingY * 2, this.canvas.height),
+              enabled: true,
+            };
+          });
+          resolve(masks);
+        });
+
+        window.tracking.track(this.canvas, tracker);
+      });
+    }
+
+    render(options = {}) {
+      const { clean = false, targetCanvas = this.canvas, targetCtx = this.ctx } = options;
+      if (!this.sourceBitmap) return;
+      this.drawSourceOnly(targetCanvas, targetCtx);
+      this.drawFaceEffects(targetCtx, targetCanvas);
+      if (!clean && this.effect !== "full-blur") {
+        this.drawMaskGuides(targetCtx);
+        this.drawActivePath(targetCtx);
+      }
+    }
+
+    drawSourceOnly(targetCanvas, targetCtx) {
+      targetCtx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
+      targetCtx.filter = "none";
+      targetCtx.globalAlpha = 1;
+      targetCtx.globalCompositeOperation = "source-over";
+      targetCtx.drawImage(this.sourceBitmap, 0, 0, targetCanvas.width, targetCanvas.height);
+    }
+
+    drawFaceEffects(ctx, canvas) {
+      if (this.effect === "full-blur") {
+        ctx.save();
+        ctx.filter = `blur(${Math.max(2, this.strength / 6)}px)`;
+        ctx.drawImage(this.sourceBitmap, 0, 0, canvas.width, canvas.height);
+        ctx.restore();
+        return;
+      }
+
+      this.masks.filter((mask) => mask.enabled).forEach((mask) => {
+        ctx.save();
+        this.clipMask(ctx, mask);
+        ctx.clip();
+        if (this.effect === "blur") {
+          ctx.filter = `blur(${Math.max(2, this.strength / 6)}px)`;
+          ctx.drawImage(this.sourceBitmap, 0, 0, canvas.width, canvas.height);
+        } else {
+          ctx.drawImage(this.sourceBitmap, 0, 0, canvas.width, canvas.height);
+          const amount = this.strength / 100;
+          ctx.globalAlpha = Math.min(0.7, amount * 0.7);
+          ctx.filter = `contrast(${1 + amount * 0.32}) saturate(${1 + amount * 0.16}) brightness(${1 + amount * 0.05})`;
+          ctx.drawImage(this.sourceBitmap, 0, 0, canvas.width, canvas.height);
+          ctx.globalAlpha = Math.min(0.4, amount * 0.4);
+          ctx.filter = "none";
+          ctx.globalCompositeOperation = "soft-light";
+          ctx.fillStyle = "rgb(255 255 255 / 0.45)";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        ctx.restore();
+      });
+    }
+
+    drawMaskGuides(ctx) {
+      this.masks.forEach((mask) => {
+        ctx.save();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = mask.enabled ? "#0058be" : "#727785";
+        ctx.fillStyle = mask.enabled ? "rgb(0 88 190 / 0.12)" : "rgb(114 119 133 / 0.1)";
+        this.clipMask(ctx, mask);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+
+        if (this.toolMode === "select") {
+          this.drawRemoveControl(ctx, mask);
+        }
+      });
+    }
+
+    drawRemoveControl(ctx, mask) {
+      const control = this.removeControlFor(mask);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(control.x, control.y, control.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#0058be";
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "white";
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(control.x - 4, control.y - 4);
+      ctx.lineTo(control.x + 4, control.y + 4);
+      ctx.moveTo(control.x + 4, control.y - 4);
+      ctx.lineTo(control.x - 4, control.y + 4);
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "white";
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    drawActivePath(ctx) {
+      if (this.activePath.length < 2) return;
+      ctx.save();
+      ctx.strokeStyle = "#0058be";
+      ctx.lineWidth = 3;
+      ctx.setLineDash([7, 5]);
+      this.pathFromPoints(ctx, this.activePath, false);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    handlePointerDown(event) {
+      if (!this.sourceBitmap || this.effect === "full-blur") return;
+      const point = this.canvasPoint(event);
+      if (this.toolMode === "select") {
+        const removeIndex = this.masks.map((mask) => this.pointInRemoveControl(point, mask)).lastIndexOf(true);
+        if (removeIndex !== -1) {
+          this.masks.splice(removeIndex, 1);
+          this.render();
+          this.updateFaceCount();
+          this.setStatus("Face selection removed.");
+          return;
+        }
+        const mask = this.masks.find((item) => this.pointInMask(point, item));
+        if (mask) {
+          mask.enabled = !mask.enabled;
+          this.render();
+          this.updateFaceCount();
+        }
+        return;
+      }
+      this.isDrawing = true;
+      this.activePath = [point];
+      this.canvas.setPointerCapture(event.pointerId);
+    }
+
+    handlePointerMove(event) {
+      if (!this.isDrawing || this.toolMode !== "lasso") return;
+      this.activePath.push(this.canvasPoint(event));
+      this.render();
+    }
+
+    finishLasso() {
+      if (!this.isDrawing) return;
+      this.isDrawing = false;
+      if (this.activePath.length > 6) {
+        this.masks.push({ type: "path", points: [...this.activePath], enabled: true });
+        this.setStatus("Manual face mask added. Effect remains face-only.");
+      }
+      this.activePath = [];
+      this.render();
+      this.updateFaceCount();
+    }
+
+    clipMask(ctx, mask) {
+      if (mask.type === "path") {
+        this.pathFromPoints(ctx, mask.points);
+        return;
+      }
+      const radius = Math.max(12, Math.min(mask.w, mask.h) * 0.14);
+      this.roundedRect(ctx, mask.x, mask.y, mask.w, mask.h, radius);
+    }
+
+    pointInMask(point, mask) {
+      if (mask.type === "box") {
+        return point.x >= mask.x && point.x <= mask.x + mask.w && point.y >= mask.y && point.y <= mask.y + mask.h;
+      }
+      const path = new Path2D();
+      path.moveTo(mask.points[0].x, mask.points[0].y);
+      mask.points.slice(1).forEach((next) => path.lineTo(next.x, next.y));
+      path.closePath();
+      return this.ctx.isPointInPath(path, point.x, point.y);
+    }
+
+    removeControlFor(mask) {
+      const bounds = this.maskBounds(mask);
+      const radius = 12;
+      return {
+        x: Math.min(this.canvas.width - radius, Math.max(radius, bounds.x + bounds.w)),
+        y: Math.min(this.canvas.height - radius, Math.max(radius, bounds.y)),
+        radius,
+      };
+    }
+
+    pointInRemoveControl(point, mask) {
+      const control = this.removeControlFor(mask);
+      return Math.hypot(point.x - control.x, point.y - control.y) <= control.radius + 4;
+    }
+
+    maskBounds(mask) {
+      if (mask.type === "box") {
+        return { x: mask.x, y: mask.y, w: mask.w, h: mask.h };
+      }
+      const xs = mask.points.map((point) => point.x);
+      const ys = mask.points.map((point) => point.y);
+      const x = Math.min(...xs);
+      const y = Math.min(...ys);
+      return { x, y, w: Math.max(...xs) - x, h: Math.max(...ys) - y };
+    }
+
+    pathFromPoints(ctx, points, close = true) {
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      points.slice(1).forEach((point) => ctx.lineTo(point.x, point.y));
+      if (close) ctx.closePath();
+    }
+
+    roundedRect(ctx, x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + width, y, x + width, y + height, radius);
+      ctx.arcTo(x + width, y + height, x, y + height, radius);
+      ctx.arcTo(x, y + height, x, y, radius);
+      ctx.arcTo(x, y, x + width, y, radius);
+      ctx.closePath();
+    }
+
+    canvasPoint(event) {
+      const rect = this.canvas.getBoundingClientRect();
+      return {
+        x: ((event.clientX - rect.left) / rect.width) * this.canvas.width,
+        y: ((event.clientY - rect.top) / rect.height) * this.canvas.height,
+      };
+    }
+
+    toGrayscale(rgba, width, height) {
+      const grayscale = new Uint8Array(width * height);
+      for (let row = 0; row < height; row += 1) {
+        for (let col = 0; col < width; col += 1) {
+          const offset = (row * width + col) * 4;
+          grayscale[row * width + col] = (2 * rgba[offset] + 7 * rgba[offset + 1] + rgba[offset + 2]) / 10;
+        }
+      }
+      return grayscale;
+    }
+
+    updateFaceCount() {
+      if (this.sourceBitmap && this.effect === "full-blur") {
+        this.faceCount.textContent = "Full image";
+        return;
+      }
+      const active = this.masks.filter((mask) => mask.enabled).length;
+      this.faceCount.textContent = this.sourceBitmap ? `${active}/${this.masks.length} faces active` : "No image";
+    }
+
+    setStatus(message) {
+      this.status.textContent = message;
+      if (this.inlineStatus) this.inlineStatus.textContent = message;
+    }
+
+    setToolMode(mode) {
+      this.toolMode = mode;
+      this.toolButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.toolMode === mode));
+      this.canvas.classList.toggle("is-lasso", this.effect !== "full-blur" && mode === "lasso");
+    }
+
+    setToolAvailability() {
+      const isFullBlur = this.effect === "full-blur";
+      this.toolButtons.forEach((button) => {
+        button.disabled = isFullBlur;
+        button.classList.toggle("opacity-45", isFullBlur);
+      });
+      this.setDetectButtonsBusy(false);
+      this.canvas.classList.toggle("is-lasso", !isFullBlur && this.toolMode === "lasso");
+    }
+
+    download() {
+      if (!this.sourceBitmap) return;
+      const output = document.createElement("canvas");
+      output.width = this.canvas.width;
+      output.height = this.canvas.height;
+      this.render({ clean: true, targetCanvas: output, targetCtx: output.getContext("2d") });
+      const link = document.createElement("a");
+      link.download = `face-${this.effect}.png`;
+      link.href = output.toDataURL("image/png");
+      link.click();
+    }
+  }
+
+  document.querySelectorAll("[data-face-tool]").forEach((root) => new FaceBlurUnblurService(root));
+</script>

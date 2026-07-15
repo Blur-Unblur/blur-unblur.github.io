@@ -1,0 +1,17 @@
+---
+interface Props {
+  question: string;
+  answer: string;
+  open?: boolean;
+}
+
+const { question, answer, open = false } = Astro.props;
+---
+
+<details class="group overflow-hidden rounded-2xl border border-outline-variant bg-white shadow-sm [&_summary::-webkit-details-marker]:hidden" open={open}>
+  <summary class="focus-ring flex cursor-pointer list-none items-center justify-between gap-4 p-6 text-lg font-bold text-on-surface transition hover:bg-surface-bright">
+    <h3>{question}</h3>
+    <span class="material-symbols-outlined shrink-0 transition group-open:rotate-180" aria-hidden="true">expand_more</span>
+  </summary>
+  <p class="border-t border-outline-variant/30 px-6 pb-6 pt-4 text-base leading-7 text-on-surface-variant">{answer}</p>
+</details>

@@ -1,0 +1,210 @@
+---
+interface Props {
+  mode?: "full" | "face";
+  title?: string;
+}
+
+const { mode = "full", title = "Full Photo Blur" } = Astro.props;
+---
+
+<div class:list={["comparison-card", `comparison-card--${mode}`]}>
+  <div class="comparison-heading">
+    <span class="material-symbols-outlined" aria-hidden="true">{mode === "face" ? "face" : "image"}</span>
+    <h3>{title}</h3>
+  </div>
+  <div class="comparison-slider" data-before-after>
+    <div class="comparison-image comparison-image--after" aria-hidden="true"></div>
+    <div class="comparison-before" data-before-layer aria-hidden="true">
+      <div class="comparison-image comparison-image--before"></div>
+    </div>
+    <div class="comparison-tag comparison-tag--before">Before</div>
+    <div class="comparison-tag comparison-tag--after">After</div>
+    <button class="comparison-handle focus-ring" type="button" aria-label="Drag to compare before and after" data-handle></button>
+  </div>
+</div>
+
+<style>
+  .comparison-card {
+    overflow: hidden;
+    border: 1px solid #c2c6d6;
+    border-radius: 0.5rem;
+    background: white;
+    box-shadow: 0 20px 45px rgb(19 27 46 / 0.16);
+  }
+
+  .comparison-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    border-bottom: 1px solid #c2c6d6;
+    padding: 0.875rem 1rem;
+    color: #191c20;
+    text-align: left;
+  }
+
+  .comparison-heading .material-symbols-outlined {
+    color: #0058be;
+    font-size: 1.25rem;
+  }
+
+  .comparison-heading h3 {
+    font-size: 0.875rem;
+    font-weight: 800;
+  }
+
+  .comparison-slider {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  .comparison-image {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .comparison-image--after {
+    background-image: var(--comparison-image);
+    filter: saturate(1.08) contrast(1.04);
+  }
+
+  .comparison-card--full {
+    --comparison-image: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=85");
+  }
+
+  .comparison-card--face {
+    --comparison-image: url("https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1400&q=85");
+  }
+
+  .comparison-before {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 35%;
+    overflow: hidden;
+    border-right: 2px solid #0058be;
+  }
+
+  .comparison-before .comparison-image {
+    width: calc(100vw + 100%);
+    max-width: none;
+    background-image: var(--comparison-image);
+  }
+
+  .comparison-card--full .comparison-before .comparison-image {
+    filter: blur(8px) opacity(0.82);
+  }
+
+  .comparison-card--face .comparison-before .comparison-image::after {
+    position: absolute;
+    inset: 0;
+    background-image: var(--comparison-image);
+    background-position: center;
+    background-size: cover;
+    clip-path: ellipse(23% 37% at 55% 38%);
+    content: "";
+    filter: blur(11px);
+  }
+
+  .comparison-tag {
+    position: absolute;
+    top: 1rem;
+    z-index: 20;
+    border-radius: 999px;
+    background: rgb(0 0 0 / 0.6);
+    padding: 0.25rem 0.75rem;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    backdrop-filter: blur(8px);
+  }
+
+  .comparison-tag--before {
+    left: 1rem;
+  }
+
+  .comparison-tag--after {
+    right: 1rem;
+    background: rgb(0 88 190 / 0.9);
+  }
+
+  .comparison-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 35%;
+    z-index: 30;
+    width: 4px;
+    border: 0;
+    background: #0058be;
+    cursor: ew-resize;
+  }
+
+  .comparison-handle::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    transform: translate(-50%, -50%);
+    border: 3px solid #0058be;
+    border-radius: 999px;
+    background-color: white;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%230058be' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m18 8 4 4-4 4M6 8l-4 4 4 4'/%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+    content: "";
+  }
+</style>
+
+<script>
+  // @ts-nocheck
+  document.querySelectorAll("[data-before-after]").forEach((slider) => {
+    const handle = slider.querySelector("[data-handle]");
+    const beforeLayer = slider.querySelector("[data-before-layer]");
+    const beforeImage = beforeLayer.querySelector(".comparison-image");
+    let isDragging = false;
+    let position = 35;
+
+    const renderPosition = () => {
+      beforeImage.style.width = `${slider.getBoundingClientRect().width}px`;
+      handle.style.left = `${position}%`;
+      beforeLayer.style.width = `${position}%`;
+    };
+
+    const moveSlider = (clientX) => {
+      const rect = slider.getBoundingClientRect();
+      position = Math.min(100, Math.max(0, ((clientX - rect.left) / rect.width) * 100));
+      renderPosition();
+    };
+
+    const start = (event) => {
+      isDragging = true;
+      handle.setPointerCapture?.(event.pointerId);
+      moveSlider(event.clientX);
+    };
+
+    const move = (event) => {
+      if (!isDragging) return;
+      moveSlider(event.clientX);
+    };
+
+    const stop = (event) => {
+      isDragging = false;
+      handle.releasePointerCapture?.(event.pointerId);
+    };
+
+    handle.addEventListener("pointerdown", start);
+    handle.addEventListener("pointermove", move);
+    handle.addEventListener("pointerup", stop);
+    handle.addEventListener("pointercancel", stop);
+    new ResizeObserver(renderPosition).observe(slider);
+    renderPosition();
+  });
+</script>

@@ -1,0 +1,21 @@
+{
+  "name": "blur-unblur",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@astrojs/check": "latest",
+    "@fontsource/inter": "latest",
+    "@tailwindcss/vite": "latest",
+    "astro": "latest",
+    "picojs": "^1.0.0",
+    "tailwindcss": "latest",
+    "tracking": "^1.1.3",
+    "typescript": "latest"
+  }
+}
