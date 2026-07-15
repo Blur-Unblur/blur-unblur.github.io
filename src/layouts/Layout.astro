@@ -13,9 +13,10 @@ const {
   structuredData,
 } = Astro.props;
 
-const siteUrl = import.meta.env.PUBLIC_SITE_URL?.replace(/\/$/, "");
+const configuredSiteUrl = Astro.site?.toString().replace(/\/$/, "");
+const siteUrl = import.meta.env.PUBLIC_SITE_URL?.replace(/\/$/, "") || configuredSiteUrl;
 const canonicalUrl = siteUrl ? new URL(Astro.url.pathname, siteUrl).toString() : undefined;
-const socialImageUrl = siteUrl ? new URL("/icon-512.png", siteUrl).toString() : undefined;
+const socialImageUrl = siteUrl ? new URL("/og-image.png", siteUrl).toString() : undefined;
 ---
 
 <!doctype html>
@@ -38,7 +39,10 @@ const socialImageUrl = siteUrl ? new URL("/icon-512.png", siteUrl).toString() : 
     <meta property="og:description" content={description} />
     {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
     {socialImageUrl && <meta property="og:image" content={socialImageUrl} />}
-    <meta name="twitter:card" content="summary" />
+    {socialImageUrl && <meta property="og:image:width" content="1200" />}
+    {socialImageUrl && <meta property="og:image:height" content="630" />}
+    {socialImageUrl && <meta property="og:image:alt" content="Blur & Unblur AI face privacy editor" />}
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     {socialImageUrl && <meta name="twitter:image" content={socialImageUrl} />}
