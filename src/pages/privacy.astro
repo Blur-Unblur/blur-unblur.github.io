@@ -7,13 +7,13 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   name: "Privacy Policy",
-  description: "Privacy information for Blur & Unblur AI, a browser-based face blur and unblur tool.",
+  description: "Privacy information for Blur & Unblur AI, a browser-based tool for blurring faces in photos.",
 };
 ---
 
 <Layout
   title="Privacy Policy | Blur & Unblur AI"
-  description="Read the Blur & Unblur AI privacy policy for local browser image processing, face detection, downloads, cookies, and GitHub Pages hosting."
+  description="Read how Blur & Unblur AI blurs faces locally in your browser using face detection, lasso masks, Canvas preview, and PNG export."
   structuredData={structuredData}
 >
   <Header />
@@ -23,19 +23,19 @@ const structuredData = {
       <h1 class="mb-6 text-4xl font-bold text-on-surface">Privacy Policy</h1>
       <div class="space-y-6 text-base leading-7 text-on-surface-variant">
         <p>
-          Blur &amp; Unblur AI is designed as a private browser-based editor for face blur, face unblur, manual lasso masks, and full photo blur. The main image workflow runs locally on your device with browser APIs such as Canvas and client-side JavaScript.
+          Blur &amp; Unblur AI is designed first as a private browser-based face blur tool. It helps you detect faces, blur selected faces, draw manual lasso face masks, and export a clean face-redacted PNG. The main image workflow runs locally on your device with browser APIs such as Canvas and client-side JavaScript.
         </p>
         <p>
-          When you choose an image, the file is decoded by your browser and rendered into the local editor. The site does not provide an upload endpoint for source photos, edited photos, detected faces, lasso regions, or downloaded PNG results. The final download is generated directly from the browser canvas.
+          When you choose an image, the file is decoded by your browser and rendered into the local face blur editor. The site does not provide an upload endpoint for source photos, edited photos, detected faces, lasso regions, or downloaded PNG results. The final download is generated directly from the browser canvas.
         </p>
         <p>
-          Face detection is used only to create editable masks inside the page. A detected face box can be toggled or removed, and a lasso region can be drawn manually when automatic detection is not enough. These selections are part of the local editing state and are not intentionally transmitted by this site.
+          Face detection is used only to create editable blur masks inside the page. A detected face box can be toggled or removed, and a lasso face region can be drawn manually when automatic detection is not enough. These selections are part of the local editing state and are not intentionally transmitted by this site.
         </p>
         <p>
           This project is hosted on GitHub Pages. GitHub may process standard technical information such as IP address, user agent, request time, and requested URL as part of normal static hosting, security, abuse prevention, and reliability operations.
         </p>
         <p>
-          Blur &amp; Unblur AI does not ask for account registration, payment details, or email addresses. Do not load images that you are not allowed to edit, and review the output before sharing it publicly.
+          Blur &amp; Unblur AI does not ask for account registration, payment details, or email addresses. Do not load face photos that you are not allowed to edit, and review the blurred output before sharing it publicly.
         </p>
         <p>
           Related pages: <a class="font-semibold text-primary underline" href="/terms/">Terms of use</a>, <a class="font-semibold text-primary underline" href="/cookies/">Cookie policy</a>, and <a class="font-semibold text-primary underline" href="/contact/">GitHub contact</a>.
